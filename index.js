@@ -26,5 +26,4 @@ app.use("/",checkAuth,staticRoute);
 app.use("/user", userRoute);
 
 
-
 app.listen(PORT, () => console.log(`server is hosted http://localhost:${PORT}`));
