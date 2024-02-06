@@ -1,3 +1,4 @@
+// this is for state full severs
 const sessionIdToUserMap = new Map();// this is a hashmap
 
 function setUser(id, user) {
