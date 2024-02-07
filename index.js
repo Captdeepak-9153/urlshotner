@@ -21,9 +21,7 @@ app.set("views", path.resolve("./views"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use("/url" , restrictToLoggedinUserOnly ,urlRoute);
+app.use("/url" , restrictToLoggedinUserOnly , urlRoute);
 app.use("/",checkAuth,staticRoute);
 app.use("/user", userRoute);
-
-
 app.listen(PORT, () => console.log(`server is hosted http://localhost:${PORT}`));
