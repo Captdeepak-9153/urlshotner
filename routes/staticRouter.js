@@ -12,22 +12,6 @@ router.get("/", async (req, res) => {
       name:username,
     });
   });
-router.get("/:shortId" , async (req,res)=>{
-  const shortId = req.params.shortId;
-  const entry = await URL.findOneAndUpdate(
-    {
-      shortId,
-    },
-    {
-      $push: {
-        visitHistory: {
-          timestamp: Date.now(),
-        },
-      },
-    }
-  );
-  res.redirect(entry.redirectURL);
-});
 
   router.get("/signup", (req, res) => {
     return res.render("signup");
