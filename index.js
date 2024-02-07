@@ -24,20 +24,29 @@ app.use(cookieParser());
 app.use("/url" , restrictToLoggedinUserOnly , urlRoute);
 app.use("/",checkAuth,staticRoute);
 app.use("/user", userRoute);
-app.get("/:shortId" , async (req,res)=>{
-    const shortId = req.params.shortId;
-    const entry = await URL.findOneAndUpdate(
-      {
-        shortId,
-      },
-      {
-        $push: {
-          visitHistory: {
-            timestamp: Date.now(),
-          },
-        },
+app.get("/:shortId" , async (req, res) => {
+  const shortId = req.params.shortId;
+  try {
+      const entry = await URL.findOneAndUpdate(
+          { shortId },
+          {
+              $push: {
+                  visitHistory: {
+                      timestamp: Date.now(),
+                  },
+              },
+          }
+      );
+
+      if (entry && entry.redirectURL) {
+          res.redirect(entry.redirectURL);
+      } else {
+          // If entry is null or redirectURL is not available
+          res.status(404).send("URL not found");
       }
-    );
-    res.redirect(entry.redirectURL);
-  });
+  } catch (error) {
+      console.error("Error while processing redirect:", error);
+      res.status(500).send("Internal Server Error");
+  }
+});
 app.listen(PORT, () => console.log(`server is hosted http://localhost:${PORT}`));
